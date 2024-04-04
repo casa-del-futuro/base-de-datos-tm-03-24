@@ -1,2 +1,1 @@
-# base-de-datos-tm-03-24
-Repositorio donde subamos las actividades realizadas en el curso de Base de Datos de Escuela de programación de la Casa del Futuro Godoy Cruz en el mes de marzo, abril y mayo del año 2024
+![Logo de Base de Datos del turno mañana](https://github.com/casa-del-futuro/base-de-datos-tm-03-24/blob/main/banner.png)
