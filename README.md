@@ -4,4 +4,5 @@
 <!-- HTML -->
 <!-- <img alt="logo base de datos" src="banner.png"> -->
 
-# Conoce las clases
+# Clases
+
