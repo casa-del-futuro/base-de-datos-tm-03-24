@@ -110,6 +110,100 @@ GROUP BY t.nombre;
 
 SELECT SUM(total_pokemon) , (214 - 151) AS pokemon_doble_tipo FROM (SELECT t.nombre AS tipo, COUNT(*) AS total_pokemon FROM tipo AS t INNER JOIN pokemon_tipo AS pt ON t.id_tipo = pt.id_tipo GROUP BY t.nombre) AS la_mejor_tabla;
 
+# GROUP BY
+/*
+Muestra los nombres de los tipos de Pokémon 
+junto con la cantidad de Pokémon de cada tipo.
+Tablas: pokemon_tipo, tipo
+Campos: nombre, numero_pokedex
+*/
+
+SELECT nombre AS tipo, COUNT(*) AS cantidad
+FROM tipo AS t
+INNER JOIN pokemon_tipo AS pt
+ON t.id_tipo = pt.id_tipo
+GROUP BY tipo;
+-- 😀😀
+
+/*
+Muestra los nombres de los tipos de Pokémon junto
+con el promedio de peso de los Pokémon de cada tipo. 
+Ordena los resultados de manera descendente según el 
+promedio de peso.
+Tablas: pokemon, pokemon_tipo, tipo
+Campos: t.nombre, p.peso
+*/
+SELECT t.nombre AS tipo, AVG(peso) AS promedio_peso
+FROM tipo AS t
+INNER JOIN pokemon_tipo AS pt
+ON pt.id_tipo = t.id_tipo
+INNER JOIN pokemon AS p 
+ON pt.numero_pokedex = p.numero_pokedex
+GROUP BY tipo
+ORDER BY promedio_peso DESC;
+-- 😎😎
+
+# HAVING 
+/*
+Muestra los nombres de los Pokémon que tienen más 
+de un tipo.
+Tablas: pokemon, pokemon_tipo
+Campos: nombre */
+
+SELECT nombre AS pokemon 
+FROM pokemon AS p
+INNER JOIN pokemon_tipo AS pt
+ON p.numero_pokedex = pt.numero_pokedex
+GROUP BY pokemon
+HAVING COUNT(id_tipo) > 1;
+
+-- subquery para contar cuantos pokémon con mas de dos tipos hay
+SELECT COUNT(*) FROM (SELECT nombre AS pokemon 
+FROM pokemon AS p
+INNER JOIN pokemon_tipo AS pt
+ON p.numero_pokedex = pt.numero_pokedex
+GROUP BY pokemon
+HAVING COUNT(id_tipo) > 1) AS pokemon;
+
+/*
+Muestra los nombres de los tipos de Pokémon junto 
+con la cantidad de Pokémon de cada tipo que tienen 
+un peso promedio mayor a 50.
+Tablas: pokemon, pokemon_tipo, tipo
+Campos: nombre, numero_pokedex */
+
+SELECT t.nombre AS tipo , 
+	   COUNT(*) AS total_pokemon,
+       AVG(peso) AS promedio_peso
+FROM tipo AS t
+INNER JOIN pokemon_tipo AS pt
+ON t.id_tipo = pt.id_tipo
+INNER JOIN pokemon AS p
+ON p.numero_pokedex = pt.numero_pokedex
+GROUP BY tipo
+HAVING promedio_peso > 50;
+
+# REGISTROS
+/*
+Muestra los nombres de los movimientos de tipo "Agua" 
+junto con los nombres de los Pokémon que pueden 
+aprenderlos y el peso de estos Pokémon.
+	Tablas: movimiento, tipo_ataque, 
+    pokemon_tipo, tipo, pokemon
+Campos: m.nombre, p.nombre, peso */
+
+SELECT m.nombre AS moviemiento, 
+	   p.nombre AS pokemon,
+       peso,
+       t.nombre AS tipo
+FROM movimiento AS m
+INNER JOIN tipo AS t
+ON t.id_tipo = m.id_tipo
+INNER JOIN pokemon_tipo pt
+ON m.id_tipo = pt.id_tipo
+INNER JOIN pokemon AS p
+ON p.numero_pokedex = pt.numero_pokedex
+WHERE t.nombre = "Agua";
 
 /*
 FUNCIONES DE ALTERACION
@@ -120,6 +214,7 @@ que contenga al menos 20 palabras.
 Tablas: movimiento, tipo_ataque
 Campos: nombre, potencia, tipo, descripcion
 */
+
 SELECT m.nombre AS movimiento, 
 	   m.potencia,
        m.descripcion,
@@ -132,6 +227,14 @@ ON t.id_tipo_ataque = ta.id_tipo_ataque
 WHERE ta.tipo = "Especial"
 AND potencia > 10 
 AND length(m.descripcion) > 20;
+
+
+
+
+
+
+
+
 
 
 /*
